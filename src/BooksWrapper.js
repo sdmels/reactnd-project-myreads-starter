@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import { PropTypes } from 'prop-types';
+
 
 class BooksWrapper extends Component {
+
+
   render() {
     return(
       <div className="list-books">
@@ -167,6 +171,10 @@ class BooksWrapper extends Component {
       </div>
     );
   }
+}
+
+BooksWrapper.propTypes = {
+  books: PropTypes.array.isRequired
 }
 
 export default BooksWrapper;
