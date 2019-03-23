@@ -13,6 +13,7 @@ class SearchBooks extends Component {
   };
 
   updateQuery = (value) => {
+    const { books } = this.props;
     clearTimeout(timeout);
     this.setState( () => ({
       query: value.trim()
@@ -21,9 +22,26 @@ class SearchBooks extends Component {
     timeout = setTimeout(() => {
       BooksAPI.search(this.state.query)
         .then( (newBooks) => {
-          this.setState( () => ({
-            newBooks
-          }))
+          if(newBooks && !newBooks.error) {
+            this.setState( () => ({
+              newBooks: newBooks.map( newBk => {
+                const foundInShelf = books.find( b => b.id === newBk.id);
+                if (foundInShelf) {
+                  return Object.assign({}, newBk, foundInShelf);
+                }
+                return Object.assign({}, newBk, {shelf: 'move'});
+              })
+            }))
+          } else {
+            this.setState({
+              newBooks: []
+            });
+          }
+        })
+        .catch( (error) => {
+          this.setState({
+            newBooks: []
+          });
         });
     }, 300);
   }
@@ -66,7 +84,8 @@ class SearchBooks extends Component {
 }
 
 SearchBooks.propTypes = {
-  onAddBook: PropTypes.func.isRequired
+  onAddBook: PropTypes.func.isRequired,
+  books: PropTypes.array.isRequired
 }
 
 export default SearchBooks;

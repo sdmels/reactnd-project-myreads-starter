@@ -4,13 +4,20 @@ import PropTypes from 'prop-types';
 class Book extends Component {
 
   state = {
-    value: 'move'
+    shelf:''
+  }
+
+  componentDidMount = () => {
+    const { book } = this.props;
+    this.setState( () => ({
+      shelf: book.shelf || 'move'
+    }));
   }
 
   handleOnChange = (event, book) => {
     const { value } = event.target;
     this.setState( () => ({
-      value: value
+      shelf: value
     }), () => {
       this.props.onUpdateShelf(value, book)
     })
@@ -18,14 +25,21 @@ class Book extends Component {
 
   render() {
     const { book } = this.props;
+    const bookCoverStyle = {
+      width: 128,
+      height: 193
+    }
+    if (book.imageLinks && book.imageLinks.thumbnail) {
+      bookCoverStyle['backgroundImage'] = 'url(' + book.imageLinks.thumbnail + ')'
+    }
     return(
       <li>
         <div className="book">
           <div className="book-top">
-            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+            <div className="book-cover" style={bookCoverStyle}></div>
             <div className="book-shelf-changer">
               <select
-                value={this.state.value}
+                value={this.state.shelf}
                 onChange={ (event) => this.handleOnChange(event, book)}>
                 <option value="move" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>

@@ -37,18 +37,11 @@ class BooksApp extends React.Component {
   }
 
   handleAddBook = (newShelfValue, book) => {
-    console.log(newShelfValue, book);
     book['shelf'] = newShelfValue;
-    this.setState( (currentState) => ({
-      books: currentState.books.concat([book])
-    }), () => {
-      BooksAPI.update(book, newShelfValue);
-
-    })
-    // BooksAPI.update(book, newShelfValue);
-    //   .then( b => {
-    //     this.getBooks();
-    //   })
+    BooksAPI.update(book, newShelfValue)
+      .then( b => {
+        this.getBooks();
+      })
   }
 
   render() {
@@ -62,7 +55,9 @@ class BooksApp extends React.Component {
         )} />
 
         <Route path='/search' render={ () => (
-          <SearchBooks onAddBook={ (value, book) => this.handleAddBook(value, book)} />
+          <SearchBooks
+            books={books}
+            onAddBook={ (value, book) => this.handleAddBook(value, book)} />
         )} />
       </div>
     )
