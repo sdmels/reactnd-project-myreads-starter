@@ -1,29 +1,59 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import * as BooksAPI from './BooksAPI'
+import Book from './Book'
 
+let timeout;
 class SearchBooks extends Component {
 
+  state = {
+    query: '',
+    newBooks: []
+  };
+
+  updateQuery = (value) => {
+    clearTimeout(timeout);
+    this.setState( () => ({
+      query: value.trim()
+    }));
+
+    timeout = setTimeout(() => {
+      BooksAPI.search(this.state.query)
+        .then( (newBooks) => {
+          this.setState( () => ({
+            newBooks
+          }))
+        });
+    }, 300);
+  }
+
   render() {
+    const { query, newBooks } = this.state;
     return(
-<div className="search-books">
-            <div className="search-books-bar">
-              <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+      <div className="search-books">
+        <div className="search-books-bar">
+        <Link className="close-search" to='/'>Close</Link>
+          <div className="search-books-input-wrapper">
 
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author"/>
+            <input type="text"
+              placeholder="Search by title or author"
+              value={query}
+              onChange={ (event) => this.updateQuery(event.target.value)}
+              />
 
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
           </div>
+        </div>
+        <div className="search-books-results">
+          <ol className="books-grid">
+            {
+              newBooks && newBooks.map( book => (
+                // <pre>JSON.stringify(book)</pre>
+                <Book key={book.id} book={book} />
+              ))
+            }
+          </ol>
+        </div>
+      </div>
     );
   }
 }
