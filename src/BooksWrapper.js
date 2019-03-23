@@ -8,9 +8,9 @@ import BookShelf from './BookShelf';
 class BooksWrapper extends Component {
 
   render() {
-    const bookRead = this.props.books.filter( book => book.shelf === 'read');
-    const bookReading = this.props.books.filter( book => book.shelf === 'currentlyReading');
-    const bookToRead = this.props.books.filter( book => book.shelf === 'wantToRead');
+    const booksRead = this.props.books.filter( book => book.shelf === 'read');
+    const booksReading = this.props.books.filter( book => book.shelf === 'currentlyReading');
+    const booksToRead = this.props.books.filter( book => book.shelf === 'wantToRead');
     return(
       <div className="list-books">
         <div className="list-books-title">
@@ -18,13 +18,21 @@ class BooksWrapper extends Component {
         </div>
         <div className="list-books-content">
           <div>
-            <BookShelf category='Currently Reading' booksByShelves={bookReading}/>
-            <BookShelf category='Want to Read' booksByShelves={bookToRead}/>
-            <BookShelf category='Read' booksByShelves={bookRead}/>
+            <BookShelf
+              category='Currently Reading'
+              onUpdateShelf={ (value, book ) =>  this.props.onUpdateBook(value, book)}
+              booksByShelves={booksReading}/>
+            <BookShelf
+              category='Want to Read'
+              onUpdateShelf={ (value, book ) =>  this.props.onUpdateBook(value, book)}
+              booksByShelves={booksToRead}/>
+            <BookShelf
+              category='Read'
+              onUpdateShelf={ (value, book ) =>  this.props.onUpdateBook(value, book)}
+              booksByShelves={booksRead}/>
           </div>
         </div>
         <div className="open-search">
-          {/* <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button> */}
           <Link to='/search'>Add a book</Link>
         </div>
       </div>
@@ -33,7 +41,8 @@ class BooksWrapper extends Component {
 }
 
 BooksWrapper.propTypes = {
-  books: PropTypes.array.isRequired
+  books: PropTypes.array.isRequired,
+  onUpdateBook: PropTypes.func.isRequired
 }
 
 export default BooksWrapper;
