@@ -4,6 +4,13 @@ This is the starter template for the final assessment project for Udacity's Reac
 
 Of course, you are free to start this project from scratch if you wish! Just be sure to use [Create React App](https://github.com/facebookincubator/create-react-app) to bootstrap the project.
 
+## Project checkout
+
+This project can be cloned from https://github.com/sdmels/reactnd-project-myreads-starter
+
+## Installation
+This project uses `yarn` as a package management. Having said, you don't have `yarn` you can use `npm`
+
 ## TL;DR
 
 To get started developing right away:
@@ -63,7 +70,7 @@ update(book, shelf)
 ```
 
 * book: `<Object>` containing at minimum an `id` attribute
-* shelf: `<String>` contains one of ["wantToRead", "currentlyReading", "read"]  
+* shelf: `<String>` contains one of ["wantToRead", "currentlyReading", "read"]
 * Returns a Promise which resolves to a JSON object containing the response data of the POST request
 
 ### `search`

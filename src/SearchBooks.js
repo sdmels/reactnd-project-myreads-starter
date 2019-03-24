@@ -14,6 +14,7 @@ class SearchBooks extends Component {
 
   updateQuery = (value) => {
     const { books } = this.props;
+    // TODO Convert Timeout to throttle/debounce. Refer https://www.peterbe.com/plog/how-to-throttle-and-debounce-an-autocomplete-input-in-react
     clearTimeout(timeout);
     this.setState( () => ({
       query: value.trim()
