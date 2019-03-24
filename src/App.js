@@ -1,7 +1,8 @@
 import React from 'react'
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import './App.css'
 
+import NoMatch from './NoMatch';
 import SearchBooks from './SearchBooks';
 import BooksWrapper from './BooksWrapper';
 import * as BooksAPI from './BooksAPI'
@@ -48,17 +49,21 @@ class BooksApp extends React.Component {
     const { books } = this.state;
     return (
       <div className="app">
-        <Route exact path='/' render={ () => (
-          <BooksWrapper
-            books={books}
-            onUpdateBook={ (value, book) => this.handleUpdateBook(value, book)}/>
-        )} />
+	      <Switch>
+            <Route exact path='/' render={ () => (
+              <BooksWrapper
+                books={books}
+                onUpdateBook={ (value, book) => this.handleUpdateBook(value, book)}/>
+            )} />
 
-        <Route path='/search' render={ () => (
-          <SearchBooks
-            books={books}
-            onAddBook={ (value, book) => this.handleAddBook(value, book)} />
-        )} />
+            <Route path='/search' render={ () => (
+              <SearchBooks
+                books={books}
+                onAddBook={ (value, book) => this.handleAddBook(value, book)} />
+            )} />   
+			
+			<Route component={NoMatch} />
+      	</Switch>
       </div>
     )
   }

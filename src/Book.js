@@ -25,9 +25,11 @@ class Book extends Component {
 
   render() {
     const { book } = this.props;
+	const placeHolderUrl = `https://books.google.com/googlebooks/images/no_cover_thumb.gif`;
     const bookCoverStyle = {
       width: 128,
-      height: 193
+      height: 193,
+      backgroundImage: `url(${placeHolderUrl})`
     }
     if (book.imageLinks && book.imageLinks.thumbnail) {
       bookCoverStyle['backgroundImage'] = 'url(' + book.imageLinks.thumbnail + ')'
